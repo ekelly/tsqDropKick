@@ -36,9 +36,11 @@
     },
 
     // HTML template for the dropdowns
+    // @ekelly - template modified to add dk_container_{{ id }} to dk_container
+    // @ekelly - and background-position for the image
     dropdownTemplate = [
-      '<div class="dk_container" id="dk_container_{{ id }}" tabindex="{{ tabindex }}">',
-        '<a class="dk_toggle">',
+      '<div class="dk_container dk_container_{{ id }}" id="dk_container_{{ id }}" tabindex="{{ tabindex }}">',
+        '<a class="dk_toggle" style="background-position: {{ arrowx }}px -1054px;">',
           '<span class="dk_label">{{ label }}</span>',
         '</a>',
         '<div class="dk_options">',
@@ -63,8 +65,13 @@
   ;
 
   // Called by using $('foo').dropkick();
-  methods.init = function (settings) {
+  // @ekelly - added scope to the function to allow for close dropkicks not to interfere with each other
+  methods.init = function (settings, scope) {
     settings = $.extend({}, defaults, settings);
+    
+    if(scope === null || scope === undefined) {
+        scope = document;
+    }
 
     return this.each(function () {
       var
@@ -85,6 +92,8 @@
 
         // This gets updated to be equal to the longest <option> element
         width  = settings.width || $select.outerWidth(),
+        
+        arrowx = -1200 + width + 72, // @ekelly - added to position the arrow
 
         // Check if we have a tabindex set or not
         tabindex  = $select.attr('tabindex') ? $select.attr('tabindex') : '',
@@ -107,6 +116,7 @@
         data.value     = _notBlank($select.val()) || _notBlank($original.attr('value'));
         data.label     = $original.text();
         data.options   = $options;
+        data.arrowx    = arrowx;  // @ekelly - for positioning the arrow image (from the sprite)
       }
 
       // Build the dropdown HTML
@@ -121,7 +131,8 @@
       $select.before($dk);
 
       // Update the reference to $dk
-      $dk = $('#dk_container_' + id).fadeIn(settings.startSpeed);
+      // @ekelly - scoping is necessary here
+      $dk = $('#dk_container_' + id, scope).fadeIn(settings.startSpeed);
 
       // Save the current theme
       theme = settings.theme ? settings.theme : 'default';
@@ -141,9 +152,16 @@
 
       // Focus events
       $dk.bind('focus.dropkick', function (e) {
-        $dk.addClass('dk_focus');
-      }).bind('blur.dropkick', function (e) {
-        $dk.removeClass('dk_open dk_focus');
+          $dk.addClass('dk_focus');
+      });
+      // @ekelly - the following bind has been modified to deal with IE difficulties
+      $dk.bind('blur.dropkick', function (e) {
+          /*** IE moves focus from the .dk_container to .dk_options on scroll bar click ***/
+          if ($(document.activeElement).closest($dk).length > 0) {
+            $dk.focus();
+            return false;
+          }
+          $dk.removeClass('dk_open dk_focus');
       });
 
       setTimeout(function () {
@@ -311,8 +329,10 @@
     ;
 
     template = template.replace('{{ id }}', view.id);
+    template = template.replace('{{ id }}', view.id); // @ekelly - necessary for template modifications
     template = template.replace('{{ label }}', view.label);
     template = template.replace('{{ tabindex }}', view.tabindex);
+    template = template.replace('{{ arrowx }}', view.arrowx); // @ekelly - necessary for template modifications
 
     if (view.options && view.options.length) {
       for (var i = 0, l = view.options.length; i < l; i++) {
@@ -332,6 +352,9 @@
 
     $dk = $(template);
     $dk.find('.dk_options_inner').html(options.join(''));
+    // @ekelly - first and last child classes added for styling purposes
+    $dk.find('.dk_options_inner li:first-child').addClass('dk_first');
+    $dk.find('.dk_options_inner li:last-child').addClass('dk_last');
 
     return $dk;
   }
@@ -341,7 +364,7 @@
   }
 
   $(function () {
-
+      
     // Handle click events on the dropdown toggler
     $('.dk_toggle').live('click', function (e) {
       var $dk  = $(this).parents('.dk_container').first();
