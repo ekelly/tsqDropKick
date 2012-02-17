@@ -1,0 +1,137 @@
+/**
+ * TSQ theme
+ *
+ * Say something about the theme
+ *
+ * Give yourself some credit here
+ *
+ */
+
+/* Container */
+.dk_theme_tsq .dk_container {
+    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#f5f5f5));
+    background: -moz-linear-gradient(top, #fff, #f5f5f5);
+    background: -o-linear-gradient(top, #fff, #f5f5f5);
+    background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 12px;
+    height: 22px;
+}
+.dk_theme_tsq a {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/* Toggle */
+/* Opens the dropdown and holds the menu label */
+.dk_theme_tsq .dk_toggle {
+    background-image: url(@sprite_url);
+    background-repeat: no-repeat;
+    border: 1px solid #AAA;
+    color: #666; /* 333 */
+    padding: 4px 45px 4px 5px;
+    text-shadow: #fff 1px 1px 0;
+    -webkit-transition: border-color .5s;
+    -moz-transition: border-color .5s;
+    -o-transition: border-color .5s;
+    transition: border-color .5s;
+    overflow: hidden;
+    height: 12px;
+    font-family: Arial;
+}
+.dk_theme_tsq .dk_toggle:hover {
+    color: #666;
+}
+
+/* Focus State */
+.dk_theme_tsq.dk_focus,
+.dk_theme_tsq:focus {}
+.dk_theme_tsq.dk_focus .dk_toggle {
+    box-shadow: 0 0 5px #40b5e2;
+    -moz-box-shadow: 0 0 5px #40b5e2;
+    -webkit-box-shadow: 0 0 5px #40b5e2;
+}
+  
+/* Open State */
+.dk_theme_tsq.dk_open {
+  box-shadow: 0 0 5px #40b5e2;
+  -moz-box-shadow: 0 0 5px #40b5e2;
+  -webkit-box-shadow: 0 0 5px #40b5e2;
+  /**
+   * Help: Dropdown menu is covered by something
+   * Try setting this value higher
+   */
+  z-index: 10;
+}
+.dk_theme_tsq.dk_open .dk_toggle {
+    background-color: white;
+    border-color: #AAA;
+    box-shadow: inset 0 -2px 5px #ccc;
+}
+
+/* Options Menu */
+.dk_theme_tsq .dk_options {
+    .rounded_corners(5px);
+}
+.dk_theme_tsq .dk_options a {
+    background-color: #fff;
+    font-weight: normal;
+    font-size: 12px;
+    font-family: Arial;
+    padding: 7px 5px;
+    border-bottom: 0px solid #00aced;
+}
+.dk_theme_tsq .dk_options li:last-child a {
+    border-bottom: none;
+}
+.dk_theme_tsq .dk_options a:hover,
+.dk_theme_tsq .dk_option_current a {
+    background-color: #e7f6fd;
+    text-decoration: none;
+    color: #00aced;
+    font-weight: normal;
+    text-shadow: none;
+}
+
+/* Inner options */
+.dk_theme_tsq .dk_options_inner .dk_last a {
+    -webkit-border-bottom-left-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    -moz-border-radius-bottomright: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    behavior: url(/launchpad/static/PIE.htc);
+}
+.dk_theme_tsq .dk_options_inner .dk_first a {
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    behavior: url(/launchpad/static/PIE.htc);
+}
+
+/* Inner container for options, this is what makes the scrollbar possible. */
+.dk_options_inner {
+    border: 1px solid #A6C9E2;
+    color: #333;
+    max-height: 250px;
+    /*text-shadow: #fff 0 1px 0;*/
+    font-weight: normal;
+    .rounded_corners(5px);
+}
+
+/* Set a width property here */
+.dk_theme_tsq .dk_options_inner,
+.dk_theme_tsq.dk_touch .dk_options {
+    max-height: 250px;
+}
+
+.dk_label {
+    font-weight: normal;
+    display: block;
+}
